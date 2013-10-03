@@ -80,7 +80,7 @@ func Slug(s string, sep string) string {
 // NewCookie is a helper method that returns a new http.Cookie object.
 // Duration is specified in seconds. If the duration is zero, the cookie is permanent.
 // This can be used in conjunction with ctx.SetCookie.
-func NewCookie(name string, value string, path string, domain string, age int64, secure bool, httpOnly bool) *http.Cookie {
+func NewCookie(name string, value string, age int64) *http.Cookie {
 	var utctime time.Time
 	if age == 0 {
 		// 2^31 - 1 seconds (roughly 2038)
@@ -88,14 +88,7 @@ func NewCookie(name string, value string, path string, domain string, age int64,
 	} else {
 		utctime = time.Unix(time.Now().Unix()+age, 0)
 	}
-	return &http.Cookie{
-		Name:     name,
-		Value:    value,
-		Path:     path,
-		Domain:   domain,
-		Expires:  utctime,
-		Secure:   secure,
-		HttpOnly: httpOnly}
+	return &http.Cookie{Name: name, Value: value, Expires: utctime}
 }
 
 // GetBasicAuth is a helper method of *Context that returns the decoded
